@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: pneumonia_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - CLINICAL_THRESHOLD=0.38
+      - MODEL_PATH=custom_pneumonia_cnn_best.keras
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: pneumonia_frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:5000/predict
+    depends_on:
+      - backend
+    restart: unless-stopped

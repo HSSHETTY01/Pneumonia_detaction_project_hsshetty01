@@ -1,0 +1,8 @@
+Flask==3.0.2
+tensorflow==2.16.1
+numpy>=1.26.0,<2.0.0
+pydicom==2.4.4
+opencv-python-headless==4.9.0.80
+pillow==10.2.0
+gunicorn==21.2.0
+flask-cors==4.0.0

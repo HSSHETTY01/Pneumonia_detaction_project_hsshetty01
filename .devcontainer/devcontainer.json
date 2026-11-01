@@ -1,0 +1,14 @@
+{
+  "name": "Pneumonia Detection Codespace",
+  "forwardPorts": [5000, 8501],
+  "portsAttributes": {
+    "5000": {
+      "label": "Flask API",
+      "onAutoForward": "notify"
+    },
+    "8501": {
+      "label": "Streamlit UI",
+      "onAutoForward": "openBrowser"
+    }
+  }
+}
