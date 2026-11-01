@@ -1,4 +1,3 @@
-# Ignore Colab system files and data mounts
 drive/
 .config/
 sample_data/
@@ -6,7 +5,8 @@ stage_2_train_images/
 stage_2_train_images.zip
 *.zip
 *.tar.gz
+*.dcm
 
-# Ignore active local model checkpoint files in root (we will explicitly include the backend one)
+# Model checkpoints in root directory
 best_custom_cnn.keras
 custom_pneumonia_cnn_best.keras

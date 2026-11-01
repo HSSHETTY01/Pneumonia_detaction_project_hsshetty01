@@ -10,6 +10,7 @@ BACKEND_URL = st.sidebar.text_input("Backend API URL", value="http://backend:500
 st.title("🫁 Pulmonary Opacity & Pneumonia Detection UI")
 uploaded_file = st.file_uploader("Choose a Chest X-ray image...", type=["dcm", "png", "jpg", "jpeg"])
 col1, col2 = st.columns([1, 1])
+
 if uploaded_file is not None:
     file_bytes = uploaded_file.getvalue()
     with col1:
@@ -21,11 +22,12 @@ if uploaded_file is not None:
             display_img = Image.fromarray(arr.astype(np.uint8))
         else:
             display_img = Image.open(io.BytesIO(file_bytes))
-        st.image(display_img, caption=f"Filename: {uploaded_file.name}", use_column_width=True)
+        st.image(display_img, caption=f"Filename: {uploaded_file.name}", use_container_width=True)
+
     with col2:
         st.subheader("Diagnostic Prediction")
         if st.button("Run Diagnostic Inference", type="primary"):
-            with st.spinner("Analyzing... "):
+            with st.spinner("Analyzing..."):
                 try:
                     files = {"file": (uploaded_file.name, file_bytes)}
                     response = requests.post(BACKEND_URL, files=files, timeout=60)
@@ -35,11 +37,17 @@ if uploaded_file is not None:
                         prob_pneumonia = result["pneumonia_probability"]
                         prob_normal = result["normal_probability"]
                         threshold = result["operating_threshold"]
+
                         if pred_class == "Lung Opacity / Pneumonia":
                             st.error(f"### Detection: **{pred_class}**")
                         else:
                             st.success(f"### Detection: **{pred_class}**")
-                        st.metric(label="Pneumonia Confidence", value=f"{prob_pneumonia:.2%}", delta=f"{(prob_pneumonia - threshold):.2%} vs cutoff")
+
+                        st.metric(
+                            label="Pneumonia Confidence",
+                            value=f"{prob_pneumonia:.2%}",
+                            delta=f"{(prob_pneumonia - threshold):.2%} vs cutoff"
+                        )
                         st.progress(prob_pneumonia)
                     else:
                         st.error(f"Backend error: {response.status_code}")
